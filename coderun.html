@@ -1,0 +1,114 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Runner</title><style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #111;
+        color: white;
+        font-family: Arial, sans-serif;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    header {
+        padding: 12px;
+        background: #1b1b1b;
+        border-bottom: 1px solid #333;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    h1 {
+        margin: 0;
+        font-size: 18px;
+        flex: 1;
+    }
+
+    button {
+        background: #2d2d2d;
+        color: white;
+        border: 1px solid #444;
+        padding: 9px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    button:hover {
+        background: #3a3a3a;
+    }
+
+    #runButton {
+        background: #16803c;
+        border-color: #20a052;
+    }
+
+    #runButton:hover {
+        background: #1b9949;
+    }
+
+    textarea {
+        flex: 1;
+        width: 100%;
+        resize: none;
+        border: none;
+        outline: none;
+        padding: 16px;
+        background: #0b0b0b;
+        color: #eee;
+        font-family: Consolas, monospace;
+        font-size: 14px;
+        line-height: 1.5;
+        tab-size: 4;
+    }
+</style>
+
+</head><body><header>
+    <h1>HTML Runner</h1>
+    <button onclick="clearCode()">Clear</button>
+    <button id="runButton" onclick="runCode()">Run</button>
+</header>
+
+<textarea id="code" spellcheck="false" placeholder="Paste code here"></textarea><script>
+    function removeHTMLCommentLines(code) {
+        return code
+            .split("\n")
+            .filter(function(line) {
+                return !line.trimStart().startsWith("<!--");
+            })
+            .join("\n");
+    }
+
+    function runCode() {
+        let code = document.getElementById("code").value;
+        code = removeHTMLCommentLines(code);
+        document.open();
+        document.write(code);
+        document.close();
+        try {
+        	history.replaceState(null, "", "about:blank");
+        } catch (e) {}
+    }
+
+    function clearCode() {
+        document.getElementById("code").value = "";
+    }
+
+    document.getElementById("code").addEventListener("keydown", function(event) {
+        if (event.ctrlKey && event.key === "Enter") {
+            event.preventDefault();
+            runCode();
+        }
+    });
+</script>
+
+</body>
+</html>
